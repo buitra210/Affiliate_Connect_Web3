@@ -1,0 +1,4 @@
+NEXT_PUBLIC_INTEGRATE_ENDPOINT = https://develop.centic.io/v1
+NEXT_PUBLIC_STAGING_ENDPOINT = https://develop.centic.io/v1
+NEXT_PUBLIC_PORTFOLIO_ENDPOINT = https://develop.centic.io/dev/v3
+NEXT_PUBLIC_CDP_ENDPOINT = https://develop.centic.io/cdp/v3

@@ -1,0 +1,1 @@
+export const TWITTER_CONTENT_LIMIT = 280;

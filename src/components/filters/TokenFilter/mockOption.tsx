@@ -1,0 +1,38 @@
+export const mockTokens = [
+  {
+    chain: "0x38",
+    address: "0x0391be54e72f7e001f6bbc331777710b4f2999ef",
+    name: "Trava Finance",
+    dapp: "Trava Lending Marketplace",
+    tags: ["Released Token"],
+    last30DaysNumberOfUsers: 1592,
+    isContract: true,
+  },
+  {
+    chain: "0xfa",
+    address: "0x477a9d5df9beda06f6b021136a2efe7be242fcc9",
+    name: "Trava Finance",
+    dapp: "Trava Lending Marketplace",
+    tags: ["Released Token"],
+    last30DaysNumberOfUsers: 127,
+    isContract: true,
+  },
+  {
+    chain: "0x1",
+    address: "0x186d0ba3dfc3386c464eecd96a61fbb1e2da00bf",
+    name: "Trava Finance",
+    dapp: "Trava Lending Marketplace",
+    tags: ["Released Token"],
+    last30DaysNumberOfUsers: 44,
+    isContract: true,
+  },
+  {
+    chain: "0x38",
+    address: "0x21d5fa5ecf2605c0e835ae054af9bba0468e5951",
+    name: "TraDAO Token",
+    dapp: "Trava Capital",
+    tags: ["Released Token"],
+    last30DaysNumberOfUsers: 35,
+    isContract: true,
+  },
+];

@@ -1,0 +1,1 @@
+export const CONTACT_PAGE_SIZE = 6;

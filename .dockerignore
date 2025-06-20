@@ -1,0 +1,14 @@
+Dockerfile
+.dockerignore
+docker-compose.yml
+node_modules
+.husky
+.vscode
+.next
+out
+.git
+.gitignore
+yarn-error.log
+npm-debug.log
+README.md
+deploy.sh

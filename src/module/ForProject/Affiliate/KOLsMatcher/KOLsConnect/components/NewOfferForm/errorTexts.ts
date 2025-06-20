@@ -1,0 +1,15 @@
+export const ERROR_TEXTS = {
+  offerName: "Please enter offer name",
+  featureLink: "Please enter featured link",
+  featureTitle: "Please enter feature title",
+  featureLogo: "Please select logo",
+  kpiExpect: "Please create at least one KPI",
+  kpiUnit: "Please select this field",
+  kpiValue: "Please enter this field",
+  chain: "Please select chain",
+  token: "Please select token",
+  amount: "Invalid amount",
+  rule: "Invalid rule",
+  bonusReward: "Please create at least one bonus reward",
+  description: "Please enter description",
+};

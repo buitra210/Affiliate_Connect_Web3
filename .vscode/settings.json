@@ -1,0 +1,5 @@
+{
+  "cSpell.words": ["activechain"],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "liveServer.settings.port": 5501
+}
