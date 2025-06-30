@@ -32,7 +32,7 @@ export default function KOLNotification() {
         await updateKolUserNotificationStatus(notificationId);
       }
       if (offerId) {
-        router.push(`/affiliate/offer/${offerId}`);
+        router.push(`/affiliate/kol-offer/${offerId}`);
       }
       dispatch(getKOLUserNotifications());
     } catch (error) {

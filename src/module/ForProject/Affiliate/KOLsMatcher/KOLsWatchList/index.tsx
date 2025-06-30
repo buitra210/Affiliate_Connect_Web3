@@ -1,72 +1,43 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import ComponentWithStatus from "@centic-scoring/components/ComponentWithStatus";
+import { useAppDispatch, useKOLsSelector } from "@centic-scoring/redux/hook";
+import { getKOLRecommendation } from "@centic-scoring/redux/slices/kols/fetchFunctions";
 import {
-  useAppDispatch,
-  useForProjectCommonSelector,
-  useKOLsSelector,
-} from "@centic-scoring/redux/hook";
-import {
-  getKOLsPurposes,
-  getKOLsTopics,
-  getKOLsWatchList,
-} from "@centic-scoring/redux/slices/kols/fetchFunctions";
-import { Box, Grid, TablePagination } from "@mui/material";
-import { useEffect } from "react";
-
-import { updateFilter } from "@centic-scoring/redux/slices/kols";
-import KOLsAdvanceFilters from "../components/KOLsAdvanceFilter";
-import KOLsFilters from "../components/KOLsFilters";
-import KOLsItem from "../components/KOLsItem";
-import SearchKOL from "../components/SearchKOL";
+  setKolsRecommendationForm,
+  clearKolsRecommendationData,
+} from "@centic-scoring/redux/slices/kols";
+import { Box, Grid, Typography, Button } from "@mui/material";
+import { useState, useEffect } from "react";
+import { KOLRecommendationRequest } from "@centic-scoring/api/services/recommendation-api";
+import KOLRecommendationForm from "../components/KOLRecommendationForm";
+import KOLRecommendationItem from "../components/KOLRecommendationItem";
 
 export default function KOLsWatchList() {
-  const { kolsFilter, kolsWatchList } = useKOLsSelector();
-  const { project } = useForProjectCommonSelector();
+  const { kolsRecommendation, kolsRecommendationForm } = useKOLsSelector();
   const dispatch = useAppDispatch();
+  const [hasSearched, setHasSearched] = useState(false);
 
+  // Check if we have previous search results when component mounts
   useEffect(() => {
-    if (project.data?.id) {
-      dispatch(
-        getKOLsWatchList({
-          id: project.data?.id,
-          input: { ...kolsFilter, page: Number(kolsFilter?.page) + 1 },
-        })
-      );
-      dispatch(getKOLsTopics({ id: project.data?.id, type: "Favorite" }));
+    if (
+      kolsRecommendation.status === "SUCCESS" &&
+      kolsRecommendation.data?.data?.recommendations &&
+      kolsRecommendation.data.data.recommendations.length > 0
+    ) {
+      setHasSearched(true);
     }
-  }, [
-    project.data?.id,
-    dispatch,
-    kolsFilter.comments_max,
-    kolsFilter.comments_min,
-    kolsFilter.followers_max,
-    kolsFilter.followers_min,
-    kolsFilter.impressions_max,
-    kolsFilter.impressions_min,
-    kolsFilter.keyword,
-    kolsFilter.language,
-    kolsFilter.likes_max,
-    kolsFilter.likes_min,
-    kolsFilter.page,
-    kolsFilter.pageSize,
-    kolsFilter.retweets_max,
-    kolsFilter.retweets_min,
-    kolsFilter.status,
-    kolsFilter.topics,
-    kolsFilter.purposes,
-    kolsFilter.sortType,
-  ]);
+  }, [kolsRecommendation.status, kolsRecommendation.data]);
 
-  useEffect(() => {
-    dispatch(updateFilter({ topics: [], page: 0, purposes: [] }));
-  }, [dispatch]);
+  const handleRecommendationSubmit = (data: KOLRecommendationRequest) => {
+    dispatch(setKolsRecommendationForm(data));
+    dispatch(getKOLRecommendation(data));
+    setHasSearched(true);
+  };
 
-  useEffect(() => {
-    if (project.data?.id) {
-      dispatch(getKOLsTopics({ id: project.data?.id, type: "Favorite" }));
-      dispatch(getKOLsPurposes({ id: project.data?.id, type: "Favorite" }));
-    }
-  }, [project.data?.id, dispatch]);
+  const handleReset = () => {
+    dispatch(clearKolsRecommendationData());
+    setHasSearched(false);
+  };
 
   return (
     <Box
@@ -75,64 +46,53 @@ export default function KOLsWatchList() {
           minHeight: "200px",
         },
         "& .no-data-container": {
-          maxWidth: "250px",
-          // "& .MuiTypography-root": {
-          //   color: "text.label1",
-          // },
+          maxWidth: "400px",
         },
       }}
     >
       <Box mt={2} mb={4}>
-        {/* <Introduction title="Welcome to KOLs WatchList" /> */}
-        <KOLsAdvanceFilters />
-        <Box
-          sx={{
-            mt: 4,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            rowGap: 2,
-          }}
-        >
-          <KOLsFilters />
-          <SearchKOL />
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+          <Typography variant="h5" fontWeight={600}>
+            KOL Recommendation - Tìm KOL phù hợp với dự án
+          </Typography>
+          {hasSearched && (
+            <Button variant="outlined" onClick={handleReset}>
+              Tìm kiếm mới
+            </Button>
+          )}
         </Box>
-      </Box>
-      <ComponentWithStatus
-        status={kolsWatchList.status}
-        noData={kolsWatchList?.data?.data?.length === 0}
-        noDataText="Your Watchlist is empty, go to Leaderboard to select KOLs."
-      >
-        <Grid container spacing={2} alignItems={"stretch"}>
-          {kolsWatchList?.data?.data?.map((kol) => {
-            return (
-              <Grid key={kol.userId} item xs={12} sm={6} lg={4}>
-                <KOLsItem data={kol} />
-              </Grid>
-            );
-          })}
-        </Grid>
 
-        <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
-          <TablePagination
-            count={kolsWatchList.data?.numberOfDocs || 0}
-            onPageChange={(_, value) => {
-              dispatch(updateFilter({ page: value }));
-            }}
-            page={kolsFilter.page || 0}
-            rowsPerPageOptions={[9, 21, 48, 99]}
-            onRowsPerPageChange={(e) => {
-              dispatch(updateFilter({ pageSize: Number(e.target.value || 9) }));
-            }}
-            rowsPerPage={kolsFilter.pageSize || 9}
-            align="right"
-            labelRowsPerPage="Page size"
-            showFirstButton
-            showLastButton
-          />
-        </Box>
-      </ComponentWithStatus>
+        <KOLRecommendationForm
+          onSubmit={handleRecommendationSubmit}
+          loading={kolsRecommendation.status === "PROCESSING"}
+          initialValues={kolsRecommendationForm}
+        />
+      </Box>
+
+      {hasSearched && (
+        <ComponentWithStatus
+          status={kolsRecommendation.status}
+          noData={kolsRecommendation?.data?.data?.recommendations?.length === 0}
+          noDataText="Không tìm thấy KOL phù hợp với tiêu chí của bạn. Hãy thử điều chỉnh các tham số."
+        >
+          <Box mb={3}>
+            <Typography variant="h6" fontWeight={600} mb={2}>
+              {kolsRecommendation.data?.message ||
+                `Tìm thấy ${kolsRecommendation.data?.data?.total_found || 0} KOL phù hợp`}
+            </Typography>
+          </Box>
+
+          <Grid container spacing={2} alignItems={"stretch"}>
+            {kolsRecommendation?.data?.data?.recommendations?.map((kol) => {
+              return (
+                <Grid key={kol.kol_id} item xs={12} sm={6} lg={4}>
+                  <KOLRecommendationItem data={kol} />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </ComponentWithStatus>
+      )}
     </Box>
   );
 }

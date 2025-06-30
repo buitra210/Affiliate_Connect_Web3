@@ -1,17 +1,7 @@
 import { centicRegister, checkEmail, checkUsername } from "@centic-scoring/api/services";
-import { organizationTypeOptions } from "@centic-scoring/constant";
 import { CloseIcon } from "@centic-scoring/icons";
 import { LoadingButton } from "@mui/lab";
-import {
-  Box,
-  Button,
-  IconButton,
-  MenuItem,
-  SxProps,
-  TextField,
-  Theme,
-  Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, SxProps, TextField, Theme, Typography } from "@mui/material";
 import { FormEvent, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -20,9 +10,12 @@ type HelperText = {
   email?: string;
   password?: string;
   passwordConfirm?: string;
-  organizationName?: string;
-  organizationType?: string;
-  userPurpose?: string;
+  name?: string;
+  imgUrl?: string;
+  summary?: string;
+  categories?: string;
+  language?: string;
+  contractAddress?: string;
 };
 
 const registerInputStyle: SxProps<Theme> | undefined = {
@@ -45,10 +38,12 @@ const RegisterComponent = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [passwordConfirmed, setPasswordConfirmed] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [organizationName, setOrganizationName] = useState<string>("");
-  const [organizationType, setOrganizationType] = useState<string>("");
-  // eslint-disable-next-line no-unused-vars
-  const [userPurpose, setUserPurpose] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [imgUrl, setImgUrl] = useState<string>("");
+  const [summary, setSummary] = useState<string>("");
+  const [categories, setCategories] = useState<string>("");
+  const [language, setLanguage] = useState<string>("");
+  const [contractAddress, setContractAddress] = useState<string>("");
   const [helperText, setHelperText] = useState<HelperText>({});
 
   const handleSetHelperText = (field: keyof HelperText, value: string) => {
@@ -159,18 +154,10 @@ const RegisterComponent = ({
   const handleCheckData2 = (): boolean => {
     setHelperText({});
     let valid = true;
-    if (!organizationName) {
-      handleSetHelperText("organizationName", "Please fill in the value");
+    if (!name) {
+      handleSetHelperText("name", "Please fill in the value");
       valid = false;
     }
-    if (!organizationType) {
-      handleSetHelperText("organizationType", "Please fill in the value");
-      valid = false;
-    }
-    // if (!userPurpose) {
-    //   handleSetHelperText("userPurpose", "Please fill in the value");
-    //   valid = false;
-    // }
     return valid;
   };
   const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
@@ -185,9 +172,12 @@ const RegisterComponent = ({
         userName,
         password,
         email,
-        organization: organizationName,
-        organizationType,
-        userPurpose,
+        name: name,
+        imgUrl,
+        summary,
+        categories: categories.split(",").map((item) => item.trim()),
+        language,
+        contractAddress,
       });
       toast("Register success", { type: "success" });
       handleClose();
@@ -325,32 +315,54 @@ const RegisterComponent = ({
           </Box>
           <form onSubmit={handleRegister}>
             <TextField
-              error={helperText.organizationName ? true : false}
+              error={helperText.name ? true : false}
               fullWidth
-              label="Organization name *"
-              onChange={(e) => setOrganizationName(e.target.value)}
-              value={organizationName}
-              helperText={helperText.organizationName || " "}
+              label="Name *"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              helperText={helperText.name || " "}
               sx={registerInputStyle}
             />
             <TextField
-              error={helperText.organizationType ? true : false}
               fullWidth
-              label="Organization type *"
-              onChange={(e) => setOrganizationType(e.target.value)}
-              value={organizationType}
-              helperText={helperText.organizationType || " "}
+              label="Image Url"
+              onChange={(e) => setImgUrl(e.target.value)}
+              value={imgUrl}
+              helperText={" "}
               sx={registerInputStyle}
-              select
-            >
-              {organizationTypeOptions.map((item) => {
-                return (
-                  <MenuItem value={item.key} key={item.key}>
-                    {item.value}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
+            />
+            <TextField
+              fullWidth
+              label="Summary"
+              onChange={(e) => setSummary(e.target.value)}
+              value={summary}
+              helperText={" "}
+              sx={registerInputStyle}
+            />
+            <TextField
+              fullWidth
+              label="Categories"
+              onChange={(e) => setCategories(e.target.value)}
+              value={categories}
+              helperText={"Separate categories with a comma"}
+              sx={registerInputStyle}
+            />
+            <TextField
+              fullWidth
+              label="Language"
+              onChange={(e) => setLanguage(e.target.value)}
+              value={language}
+              helperText={" "}
+              sx={registerInputStyle}
+            />
+            <TextField
+              fullWidth
+              label="Contract Address"
+              onChange={(e) => setContractAddress(e.target.value)}
+              value={contractAddress}
+              helperText={" "}
+              sx={registerInputStyle}
+            />
 
             <Button
               fullWidth

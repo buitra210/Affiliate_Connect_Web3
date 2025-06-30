@@ -14,6 +14,10 @@ import {
   RTDiscussedTopics,
   RTTopTweets,
 } from "@centic-scoring/api/services/affiliate";
+import {
+  KOLRecommendationResponse,
+  KOLRecommendationRequest,
+} from "@centic-scoring/api/services/recommendation-api";
 import { DataWithStatus } from "../global";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
@@ -33,13 +37,15 @@ import {
   getKOLsSortBy,
   getKOLsDiscussedTopics,
   getKOLsTopTweet,
+  getKOLRecommendation,
 } from "./fetchFunctions";
 
 type SortType = "followers" | "likes" | "replies" | "retweets" | "views" | "bestFit";
 
 export type TKOLsSlice = {
   kols: DataWithStatus<{ numberOfDocs: number; data: RTKolsListItems[] }>;
-  // kolsRecommendation: DataWithStatus<{ numberOfDocs: number; data: RTKolsListItems[] }>;
+  kolsRecommendation: DataWithStatus<KOLRecommendationResponse>;
+  kolsRecommendationForm: KOLRecommendationRequest | null;
   isRecommendation: boolean;
   kolsWatchList: DataWithStatus<{ numberOfDocs: number; data: RTKolsListItems[] }>;
   topics: DataWithStatus<RTKOLsTopic>;
@@ -159,7 +165,11 @@ const initData: TKOLsSlice = {
 
   kols: { status: "IDLE", data: { numberOfDocs: 0, data: [] } },
   isRecommendation: false,
-  // kolsRecommendation: { status: "IDLE", data: { numberOfDocs: 0, data: [] } },
+  kolsRecommendation: {
+    status: "IDLE",
+    data: { status: "", message: "", data: { recommendations: [], total_found: 0 } },
+  },
+  kolsRecommendationForm: null,
   kolsWatchList: { status: "IDLE", data: { numberOfDocs: 0, data: [] } },
   purposes: { status: "IDLE", data: {} },
   sortBy: { status: "IDLE", data: { numberOfDocs: 0, data: [] } },
@@ -240,6 +250,16 @@ export const kolsSlice = createSlice({
     },
     setRecommendation: (state, action: PayloadAction<boolean>) => {
       state.isRecommendation = action.payload;
+    },
+    setKolsRecommendationForm: (state, action: PayloadAction<KOLRecommendationRequest>) => {
+      state.kolsRecommendationForm = action.payload;
+    },
+    clearKolsRecommendationData: (state) => {
+      state.kolsRecommendation = {
+        status: "IDLE",
+        data: { status: "", message: "", data: { recommendations: [], total_found: 0 } },
+      };
+      state.kolsRecommendationForm = null;
     },
   },
   extraReducers: function (builder) {
@@ -572,8 +592,23 @@ export const kolsSlice = createSlice({
       })
       .addCase(getKOLsSortBy.rejected, (state) => {
         state.sortBy.status = "FAILED";
+      })
+      .addCase(getKOLRecommendation.pending, (state) => {
+        state.kolsRecommendation.status = "PROCESSING";
+      })
+      .addCase(getKOLRecommendation.fulfilled, (state, action) => {
+        state.kolsRecommendation.status = "SUCCESS";
+        state.kolsRecommendation.data = action.payload;
+      })
+      .addCase(getKOLRecommendation.rejected, (state) => {
+        state.kolsRecommendation.status = "FAILED";
       });
   },
 });
 export default kolsSlice.reducer;
-export const { updateFilter, setRecommendation } = kolsSlice.actions;
+export const {
+  updateFilter,
+  setRecommendation,
+  setKolsRecommendationForm,
+  clearKolsRecommendationData,
+} = kolsSlice.actions;

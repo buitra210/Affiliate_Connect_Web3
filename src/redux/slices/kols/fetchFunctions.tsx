@@ -20,6 +20,10 @@ import {
   TypeFilter,
 } from "@centic-scoring/api/services/affiliate";
 import { sleep } from "@centic-scoring/hooks/useScoreDistribution";
+import {
+  fetchKOLRecommendation,
+  KOLRecommendationRequest,
+} from "@centic-scoring/api/services/recommendation-api";
 
 export const getKOLsList = createAsyncThunk(
   "get-kols",
@@ -210,5 +214,13 @@ export const getKOLsSortBy = createAsyncThunk(
     sortType?: string;
   }) => {
     return await fetchKOLsSortBy({ id, page, pageSize, sortType });
+  }
+);
+
+export const getKOLRecommendation = createAsyncThunk(
+  "get-kol-recommendation",
+  async (input: KOLRecommendationRequest) => {
+    const response = await fetchKOLRecommendation(input);
+    return response;
   }
 );

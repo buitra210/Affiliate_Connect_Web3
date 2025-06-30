@@ -48,6 +48,12 @@ export const forProjectCommon = createSlice({
     setProjectCreatedState: (state, action: PayloadAction<boolean>) => {
       state.projectCreated = action.payload;
     },
+    // For 1 user = 1 project: Always consider user has a virtual project
+    setVirtualProject: (state, action: PayloadAction<{ userName: string }>) => {
+      state.project.status = "SUCCESS";
+      state.project.data = { id: action.payload.userName } as RTUserProject;
+      state.projectCreated = true;
+    },
     setEventsFetchTimeWindow: (
       state,
       action: PayloadAction<Partial<TCommonData["events"]["currentTimeWindow"]>>
@@ -116,6 +122,7 @@ export default forProjectCommon.reducer;
 export const {
   resetForProjectState,
   setProjectCreatedState,
+  setVirtualProject,
   setEventsFetchTimeWindow,
   setEventsFetchedTimeWindow,
 } = forProjectCommon.actions;

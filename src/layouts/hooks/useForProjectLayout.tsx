@@ -2,18 +2,25 @@ import { useForProjectCommonSelector } from "@centic-scoring/redux/hook";
 import { useMemo } from "react";
 import { GearIcon, UsersIcon } from "@centic-scoring/icons";
 import { SidebarConfigItem } from "../sidebar-configs/sidebarConfig";
+import { useAuthContext } from "@centic-scoring/context/auth-context";
 
 export default function useForProjectSidebar() {
   const { project } = useForProjectCommonSelector();
+  const { userName, isLoggedIn } = useAuthContext();
 
   const forProjectSideBar: SidebarConfigItem[] = useMemo(() => {
     let config: SidebarConfigItem[] = [];
-    if (project.status === "SUCCESS" && project.data?.id) {
+
+    // 1 user = 1 project: Use userName as project ID
+    const projectId = project.data?.id || userName;
+    const hasValidProject = isLoggedIn && userName && projectId;
+
+    if (hasValidProject) {
       config = [
         {
           title: "Affiliate",
-          path: `/projects/affiliate/${project.data?.id}`,
-          redirectTo: `/projects/affiliate/${project.data?.id}/kols-matcher`,
+          path: `/projects/affiliate/${projectId}`,
+          redirectTo: `/projects/affiliate/${projectId}/kols-matcher`,
           icon: UsersIcon,
           auth: true,
           redirect: false,
@@ -41,7 +48,7 @@ export default function useForProjectSidebar() {
         },
         {
           title: "Setting",
-          path: `/projects/setting/${project.data?.id}`,
+          path: `/projects/setting/${projectId}`,
           icon: GearIcon,
           auth: true,
           redirect: false,
@@ -70,7 +77,7 @@ export default function useForProjectSidebar() {
       },
     ];
     return config;
-  }, [project]);
+  }, [project, userName, isLoggedIn]);
 
   return { sidebar: forProjectSideBar };
 }

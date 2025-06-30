@@ -30,6 +30,12 @@ export async function checkEmail(email: string) {
 
 //login
 type LoginReturnType = {
+  jwt: string;
+  userId: string;
+  projectId: string;
+};
+
+type OldLoginReturnType = {
   success: boolean;
   jwt: string;
 };
@@ -40,38 +46,57 @@ export async function centicLogin({
 }: {
   userName: string;
   password: string;
-}): Promise<LoginReturnType> {
-  return await postAPI<LoginReturnType>(baseUrl + "/centic/auth/login", {
+}): Promise<OldLoginReturnType> {
+  const result = await postAPI<LoginReturnType>("http://0.0.0.0:8096/v3/projects/login", {
     body: JSON.stringify({
       userName: userName,
       password: password,
     }),
   });
+  if (result.jwt) {
+    return {
+      success: true,
+      jwt: result.jwt,
+    };
+  }
+  return {
+    success: false,
+    jwt: "",
+  };
 }
 //register
 export async function centicRegister({
   userName,
   password,
   email,
-  organization,
-  organizationType,
-  userPurpose,
+  name,
+  imgUrl,
+  summary,
+  categories,
+  language,
+  contractAddress,
 }: {
   userName: string;
   password: string;
   email: string;
-  organization: string;
-  organizationType: string;
-  userPurpose: string;
+  name: string;
+  imgUrl: string;
+  summary: string;
+  categories: string[];
+  language: string;
+  contractAddress: string;
 }) {
-  const res = await postAPI(baseUrl + "/centic/auth/register", {
+  const res = await postAPI("http://0.0.0.0:8096/v3/projects/register", {
     body: JSON.stringify({
-      userName: userName,
-      password: password,
+      username: userName,
+      name,
       email,
-      organization,
-      organizationType,
-      userPurpose,
+      imgUrl,
+      summary,
+      categories,
+      language,
+      contractAddress,
+      password: password,
     }),
   });
 
@@ -117,7 +142,7 @@ type GetNameReturnType = {
   verified: boolean;
 };
 export async function getName(): Promise<GetNameReturnType> {
-  const res = await getAuthAPI<GetNameReturnType>(baseUrl + "/user/getUsername", {});
+  const res = await getAuthAPI<GetNameReturnType>("http://0.0.0.0:8096/v3/getUsername", {});
   return res;
 }
 /**
@@ -522,7 +547,7 @@ export type RTGetAPIKey = {
   apiKey: string;
 };
 export async function fetchApiKey(): Promise<RTGetAPIKey> {
-  const res = await getAuthAPI<RTGetAPIKey>(baseUrl + "/centic/gateway/getAPIKey", {});
+  const res = await getAuthAPI<RTGetAPIKey>("http://0.0.0.0:8096/v3/project/getAPIKey", {});
   return res;
 }
 //refreshKey
@@ -1104,3 +1129,5 @@ export type RTProjectConfig = {
 export async function fetchProjectConfig(id: string) {
   return await getAPIWithKey<RTProjectConfig>(baseUrlPortfolio + `/data/${id}/configs`);
 }
+
+export * from "./recommendation-api";
