@@ -1,6 +1,5 @@
 import { getAPIWithPrefix } from "@centic-scoring/utils/storage/authStorage";
 import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
-import { useAccount } from "wagmi";
 
 export type TEndUserContext = {
   isLoggedIn: boolean;
@@ -12,7 +11,7 @@ export type TEndUserContext = {
 const EndUserContext = createContext<TEndUserContext>({} as TEndUserContext);
 export default function EndUserContextProvider({ children }: { children: React.ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { isConnected } = useAccount();
+  const isConnected = false; // Mock value since wagmi is removed
   const checkAuthStatus = useCallback(() => {
     const kolJwt = getAPIWithPrefix("portfolio");
     if (!kolJwt || !isConnected) {

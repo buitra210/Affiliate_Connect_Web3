@@ -23,7 +23,7 @@ export default function OfferLetter({
           </IconButton>
         </Box>
         <Typography variant="h2" my={6} sx={{ textAlign: "center" }}>
-          Collaboration Invitation from Project&#39;s name
+          Collaboration Invitation
         </Typography>
         <TextEditor onValueChange={() => {}} initValue={content} inputType="markdown" />
         <Box sx={{ mt: 3 }}>

@@ -1,6 +1,5 @@
 import { AddIcon, CloseIcon } from "@centic-scoring/icons";
 import {
-  Avatar,
   Box,
   Button,
   Dialog,
@@ -18,7 +17,6 @@ import {
 } from "@mui/material";
 import useKOLsConnectparams from "../../hooks/useKOLsConnectParams";
 import useDialogState from "@centic-scoring/hooks/common/useDialogState";
-import CenticLogo from "public/Centic-logo.png";
 import { useEffect, useState } from "react";
 import { DataWithStatus } from "@centic-scoring/redux/slices/global";
 import { KOLConnectAPI, RTOfferList } from "@centic-scoring/api/services/affiliate/affiliate";
@@ -59,12 +57,6 @@ function Content({ handleClose }: { handleClose: () => void }) {
   return (
     <Box p={3} sx={{ backgroundColor: "background.paper" }}>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar src={CenticLogo.src} sx={{ width: "24px", height: "24px", mr: 1 }} />
-          <Typography variant="h6" fontWeight={700} color="text.secondary">
-            Centic.io
-          </Typography>
-        </Box>
         <IconButton onClick={handleClose}>
           <CloseIcon sx={{ fontSize: "1rem" }} />
         </IconButton>

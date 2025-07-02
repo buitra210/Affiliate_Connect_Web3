@@ -1,21 +1,16 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import React, { useMemo } from "react";
 
-import KOLsInfluence from "../../Affiliate/KOLsMatcher/KOLInfluence";
 import useURLQuery from "@centic-scoring/hooks/common/useUrlQuery";
 import KOLsConnect from "../../Affiliate/KOLsMatcher/KOLsConnect";
-import KOLsMatcherList from "./Leaderboard";
 import KOLsWatchList from "./KOLsWatchList";
 import KOLsBanner from "./components/KOLsBanner";
+import ReportProject from "./ReportProject";
 
 export default function KOLsMatcher() {
   const { setCustomKey, getCustomKey } = useURLQuery();
   const currentTab = useMemo(() => {
-    return (getCustomKey("tab") || "leaderboard") as
-      | "leaderboard"
-      | "watchlist"
-      | "connect"
-      | "report";
+    return (getCustomKey("tab") || "connect") as "watchlist" | "connect" | "report";
   }, [getCustomKey]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -45,13 +40,6 @@ export default function KOLsMatcher() {
 
   return (
     <Box>
-      {currentTab === "leaderboard" && (
-        <KOLsBanner
-          title="KOL Leaderboard"
-          content="Rank and showcase top-performing KOLs."
-          src="/affiliate/kol-project-banner.png"
-        />
-      )}
       {currentTab === "watchlist" && (
         <KOLsBanner
           title="KOL Watchlist"
@@ -140,10 +128,9 @@ export default function KOLsMatcher() {
         ))}
       </Tabs>
       <Box sx={{ mt: 2 }}>
-        {currentTab === "leaderboard" && <KOLsMatcherList />}
         {currentTab === "watchlist" && <KOLsWatchList />}
         {currentTab === "connect" && <KOLsConnect />}
-        {currentTab === "report" && <KOLsInfluence />}
+        {currentTab === "report" && <ReportProject />}
       </Box>
     </Box>
   );

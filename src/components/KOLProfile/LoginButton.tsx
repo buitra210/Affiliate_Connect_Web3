@@ -1,7 +1,6 @@
 import { useKOLAuthContext } from "@centic-scoring/context/kol-auth-context";
 import { TwitterIcon } from "@centic-scoring/icons";
 import { Box, Button, Checkbox, Dialog, Typography } from "@mui/material";
-import centicLogo from "public/centic_light_horizontal.png";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import CenticLoading from "../CenticLoading";
@@ -38,7 +37,6 @@ function Content() {
   return (
     <Box sx={{ p: 3, maxWidth: "400px" }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={centicLogo.src} style={{ height: "16px", width: "auto" }} alt="centic logo" />
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <Typography
           variant="h5"

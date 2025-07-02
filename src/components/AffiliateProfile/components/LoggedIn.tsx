@@ -19,7 +19,7 @@ export default function LoggedIn() {
 
   return (
     <>
-      <Button variant="outlined" onClick={openModal}>
+      <Button variant="contained" onClick={openModal}>
         {userData.status === "PROCESSING" && <CenticLoading size={20} />}
         {userData.status === "SUCCESS" &&
           `Welcome ${userData.data?.displayName || userData.data?.userName}`}

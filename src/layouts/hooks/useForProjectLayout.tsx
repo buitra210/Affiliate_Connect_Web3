@@ -46,15 +46,15 @@ export default function useForProjectSidebar() {
           ],
           showId: false,
         },
-        {
-          title: "Setting",
-          path: `/projects/setting/${projectId}`,
-          icon: GearIcon,
-          auth: true,
-          redirect: false,
-          subTab: [],
-          showId: false,
-        },
+        // {
+        //   title: "Setting",
+        //   path: `/projects/setting/${projectId}`,
+        //   icon: GearIcon,
+        //   auth: true,
+        //   redirect: false,
+        //   subTab: [],
+        //   showId: false,
+        // },
       ];
       return config;
     }

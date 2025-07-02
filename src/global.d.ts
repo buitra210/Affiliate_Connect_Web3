@@ -5,7 +5,6 @@ export type localStorageType = {
 
 import { EIP1193Provider } from "viem";
 import { UnionEvaluate } from "viem/_types/types/utils";
-import { Tron } from "./wagmi/connectors/tronLink";
 
 export type WalletProvider = UnionEvaluate<
   EIP1193Provider & {
@@ -35,7 +34,6 @@ interface RequestArguments {
 declare global {
   interface Window {
     coin98?: true;
-    tron?: Tron;
     tronLink: any;
   }
 }

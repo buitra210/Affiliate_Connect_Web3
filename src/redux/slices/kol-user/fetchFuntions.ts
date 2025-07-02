@@ -6,6 +6,12 @@ import {
   fetchKOLNotifications,
   fetchKOLOtherVersion,
   AffiliateKOLAPI,
+  RTActiveWalletRequest,
+  fetchActiveWallet,
+  RTNewHoldersRequest,
+  fetchNewHolders,
+  RTVolumeRequest,
+  fetchVolume,
 } from "@centic-scoring/api/services/affiliate/affiliate";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -54,3 +60,24 @@ export const getKOLAffiliateLinkInfo = createAsyncThunk(
     return await AffiliateKOLAPI.fetchAffiliateLinkInfo(offerId);
   }
 );
+
+export const getActiveWallet = createAsyncThunk(
+  "report/active-wallet",
+  async (data: RTActiveWalletRequest) => {
+    const response = await fetchActiveWallet(data);
+    return response;
+  }
+);
+
+export const getNewHolders = createAsyncThunk(
+  "report/new-holders",
+  async (data: RTNewHoldersRequest) => {
+    const response = await fetchNewHolders(data);
+    return response;
+  }
+);
+
+export const getVolume = createAsyncThunk("report/volume", async (data: RTVolumeRequest) => {
+  const response = await fetchVolume(data);
+  return response;
+});

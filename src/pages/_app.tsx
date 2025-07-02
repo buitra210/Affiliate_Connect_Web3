@@ -9,17 +9,13 @@ import Script from "next/script";
 import { store } from "@centic-scoring/redux/store";
 import Head from "next/head";
 import { Meta } from "@centic-scoring/components/Meta";
-import centicLogo from "public/Centic-logo.png";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 //SOME LIB CSS
 import "aos/dist/aos.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-import { wagmiConfig } from "../wagmi/config";
 import InitUserPermission from "@centic-scoring/module/InitUserPermission";
 import { ReactElement, ReactNode } from "react";
 import { NextPage } from "next";
@@ -58,36 +54,33 @@ export default function CenticApp({ Component, pageProps }: AppPropsWithLayout) 
         description={
           "A comprehensive solution that scores, tracks, and analyzes entire blockchain entities."
         }
-        imageUrl={centicLogo.src}
         url={"https://centic.io"}
       />
       <AppTheme>
-        <WagmiProvider config={wagmiConfig}>
-          <QueryClientProvider client={queryClient}>
-            <Provider store={store}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <AuthContextProvider>
-                  <ToastContainer
-                    limit={3}
-                    theme="colored"
-                    hideProgressBar
-                    position="top-right"
-                    autoClose={1500}
-                    closeButton={false}
-                    toastStyle={{
-                      // "--toastify-font-family": primaryFont.style.fontFamily,
-                      fontSize: "0.875rem",
-                      fontWeight: 500,
-                    }}
-                  />
-                  <HighchartsGlobalConfig />
-                  <InitUserPermission />
-                  {getLayout(<Component {...pageProps} />)}
-                </AuthContextProvider>
-              </LocalizationProvider>
-            </Provider>
-          </QueryClientProvider>
-        </WagmiProvider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <AuthContextProvider>
+                <ToastContainer
+                  limit={3}
+                  theme="colored"
+                  hideProgressBar
+                  position="top-right"
+                  autoClose={1500}
+                  closeButton={false}
+                  toastStyle={{
+                    // "--toastify-font-family": primaryFont.style.fontFamily,
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                  }}
+                />
+                <HighchartsGlobalConfig />
+                <InitUserPermission />
+                {getLayout(<Component {...pageProps} />)}
+              </AuthContextProvider>
+            </LocalizationProvider>
+          </Provider>
+        </QueryClientProvider>
       </AppTheme>
     </>
   );

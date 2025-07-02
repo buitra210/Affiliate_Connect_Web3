@@ -2,22 +2,19 @@
 import ComponentWithStatus from "@centic-scoring/components/ComponentWithStatus";
 import { useAppDispatch, useKOLsSelector } from "@centic-scoring/redux/hook";
 import { getKOLRecommendation } from "@centic-scoring/redux/slices/kols/fetchFunctions";
-import {
-  setKolsRecommendationForm,
-  clearKolsRecommendationData,
-} from "@centic-scoring/redux/slices/kols";
+import { setKolsRecommendationForm } from "@centic-scoring/redux/slices/kols";
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import { KOLRecommendationRequest } from "@centic-scoring/api/services/recommendation-api";
-import KOLRecommendationForm from "../components/KOLRecommendationForm";
+import KOLRecommendationDialog from "../components/KOLRecommendationDialog";
 import KOLRecommendationItem from "../components/KOLRecommendationItem";
 
 export default function KOLsWatchList() {
   const { kolsRecommendation, kolsRecommendationForm } = useKOLsSelector();
   const dispatch = useAppDispatch();
   const [hasSearched, setHasSearched] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  // Check if we have previous search results when component mounts
   useEffect(() => {
     if (
       kolsRecommendation.status === "SUCCESS" &&
@@ -32,11 +29,7 @@ export default function KOLsWatchList() {
     dispatch(setKolsRecommendationForm(data));
     dispatch(getKOLRecommendation(data));
     setHasSearched(true);
-  };
-
-  const handleReset = () => {
-    dispatch(clearKolsRecommendationData());
-    setHasSearched(false);
+    setDialogOpen(false);
   };
 
   return (
@@ -51,18 +44,22 @@ export default function KOLsWatchList() {
       }}
     >
       <Box mt={2} mb={4}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
-          <Typography variant="h5" fontWeight={600}>
-            KOL Recommendation - Tìm KOL phù hợp với dự án
-          </Typography>
-          {hasSearched && (
-            <Button variant="outlined" onClick={handleReset}>
-              Tìm kiếm mới
+        {!hasSearched && (
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => setDialogOpen(true)}
+              sx={{ minWidth: "200px" }}
+            >
+              Find KOL
             </Button>
-          )}
-        </Box>
+          </Box>
+        )}
 
-        <KOLRecommendationForm
+        <KOLRecommendationDialog
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
           onSubmit={handleRecommendationSubmit}
           loading={kolsRecommendation.status === "PROCESSING"}
           initialValues={kolsRecommendationForm}
@@ -70,15 +67,38 @@ export default function KOLsWatchList() {
       </Box>
 
       {hasSearched && (
+        <Button
+          variant="contained"
+          size="large"
+          onClick={() => setDialogOpen(true)}
+          sx={{
+            position: "fixed",
+            bottom: 32,
+            right: 32,
+            minWidth: "120px",
+            zIndex: 1000,
+            boxShadow: 3,
+            "&:hover": {
+              boxShadow: 6,
+            },
+          }}
+        >
+          Find KOL
+        </Button>
+      )}
+
+      {hasSearched && (
         <ComponentWithStatus
           status={kolsRecommendation.status}
           noData={kolsRecommendation?.data?.data?.recommendations?.length === 0}
-          noDataText="Không tìm thấy KOL phù hợp với tiêu chí của bạn. Hãy thử điều chỉnh các tham số."
+          noDataText="No KOLs found"
         >
           <Box mb={3}>
             <Typography variant="h6" fontWeight={600} mb={2}>
               {kolsRecommendation.data?.message ||
-                `Tìm thấy ${kolsRecommendation.data?.data?.total_found || 0} KOL phù hợp`}
+                `Found ${
+                  kolsRecommendation.data?.data?.total_found || 0
+                } KOLs suitable for your project`}
             </Typography>
           </Box>
 

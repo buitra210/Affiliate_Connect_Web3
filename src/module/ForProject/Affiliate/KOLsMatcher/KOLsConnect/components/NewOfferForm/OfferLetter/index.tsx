@@ -3,15 +3,9 @@ import TextEditor from "@centic-scoring/components/TextEditor";
 import useDialogState from "@centic-scoring/hooks/common/useDialogState";
 import useURLQuery from "@centic-scoring/hooks/common/useUrlQuery";
 import { CloseIcon } from "@centic-scoring/icons";
-import {
-  useAppDispatch,
-  useForProjectCommonSelector,
-  useKOLOfferSelector,
-} from "@centic-scoring/redux/hook";
+import { useAppDispatch, useKOLOfferSelector } from "@centic-scoring/redux/hook";
 import { LoadingButton } from "@mui/lab";
 import { Paper, Box, IconButton, Typography, Button, Dialog } from "@mui/material";
-import Image from "next/image";
-import LogoImg from "public/centic_light_horizontal.png";
 import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import useKOLsConnectparams from "../../../hooks/useKOLsConnectParams";
@@ -72,7 +66,6 @@ export default function OfferLetter() {
   );
 }
 function Content({ handleClose, text }: { handleClose: () => void; text?: string }) {
-  const { project } = useForProjectCommonSelector();
   const [editText, setEditText] = useState<string>(String(text) || "");
 
   // const [step, setStep] = useState(0);
@@ -88,7 +81,6 @@ function Content({ handleClose, text }: { handleClose: () => void; text?: string
       {/* {step === 0 && ( */}
       <Paper sx={{ px: 5, py: 6, width: "100%" }}>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <Image src={LogoImg} alt="logo" width={111} height={31.6} />
           <IconButton
             onClick={() => {
               handleClose && handleClose();
@@ -98,7 +90,7 @@ function Content({ handleClose, text }: { handleClose: () => void; text?: string
           </IconButton>
         </Box>
         <Typography variant="h2" my={6} sx={{ textAlign: "center" }}>
-          {`Collaboration Invitation from ${project.data?.name}`}
+          Collaboration Invitation
         </Typography>
         <Box
           sx={{
