@@ -23,5 +23,4 @@ export const useAuthEndUserSelector = () => useAppSelector((state) => state.auth
 export const useAffiliateAmbassadorSelector = () =>
   useAppSelector((state) => state.affiliateAbmassador);
 export const useAffiliateAuthSelector = () => useAppSelector((state) => state.affiliateUserAuth);
-
 //PRESALE

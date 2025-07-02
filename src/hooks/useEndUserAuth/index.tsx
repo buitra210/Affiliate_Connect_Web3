@@ -2,10 +2,8 @@ import { useAppDispatch } from "@centic-scoring/redux/hook";
 import { updateAuthState } from "@centic-scoring/redux/slices/auth-end-user";
 import { getAPIWithPrefix } from "@centic-scoring/utils/storage/authStorage";
 import { useCallback } from "react";
-import { useAccount } from "wagmi";
-
 export default function useEndUserAuth() {
-  const { isConnected } = useAccount();
+  const isConnected = false; // Mock value since wagmi is removed
   const dispatch = useAppDispatch();
 
   const checkStatus = useCallback(() => {

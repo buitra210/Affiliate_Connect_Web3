@@ -23,20 +23,21 @@ import { useMemo } from "react";
 export function getStatusColor(color: string) {
   switch (color) {
     case "Request":
-      return "#ed6c02";
+      return "#FFB800";
     case "Upgrade":
     case "Upgrading":
-      return "#2e7d32";
+      return "#29845A";
     case "In Progress":
-      return "#1976d2";
+      return "#047857";
     case "Done":
+      return "#059669";
     case "Accept":
       return "#0CAD9A";
     case "Reject":
     case "Cancel":
       return "#C22525";
     default:
-      return "#CCCCCC";
+      return "#1976d2";
   }
 }
 

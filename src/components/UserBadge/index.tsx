@@ -5,13 +5,13 @@ import UserBadgeNotify from "./UserBadgeNotify";
 import { useCallback, useEffect, useState } from "react";
 import { SvgIconComponent } from "@centic-scoring/icons";
 import IconFlipAndMove from "./IconFlipAndMove";
-import { useAccount } from "wagmi";
+// wagmi removed
 import { getStorageWithPrefix, setStorageItem } from "@centic-scoring/utils/storage/authStorage";
 import { useAuthEndUserSelector } from "@centic-scoring/redux/hook";
 
 export default function UserBadge() {
   const { data } = useUserLevel();
-  const { address } = useAccount();
+  const address = null; // Mock value since wagmi is removed
   const { isLoggedin } = useAuthEndUserSelector();
   const [animationStep, setAnimationStep] = useState(0);
   const userLevel = data?.userLevel;

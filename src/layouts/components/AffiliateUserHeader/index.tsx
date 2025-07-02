@@ -1,7 +1,5 @@
-import SearchInput from "@centic-scoring/components/SearchInput";
-import { LogoIcon, LogoIconMobile, MenuIcon } from "@centic-scoring/icons";
-import { useMediaQuery, Box, IconButton, Drawer, Theme } from "@mui/material";
-import Link from "next/link";
+import { MenuIcon } from "@centic-scoring/icons";
+import { useMediaQuery, Box, IconButton, Drawer, Theme, Typography } from "@mui/material";
 
 import Navigation from "../Navigation";
 import KOLSidebar from "../AffiliateSidebar";
@@ -31,38 +29,18 @@ export default function AffiliateUserHeader() {
         sx={{
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        {!isIpad && (
-          <Link href="/">
-            <LogoIcon
-              sx={{
-                width: "111px",
-                height: "40px",
-                mx: 2,
-              }}
-            />
-          </Link>
-        )}
-        {isIpad && (
-          <>
-            <Link href="/">
-              <LogoIconMobile
-                sx={{
-                  fontSize: "2rem",
-                  mx: 2,
-                }}
-              />
-            </Link>
-          </>
-        )}
-        <SearchInput />
+        <Typography variant="h4" color="background.paper" sx={{ ml: 2 }}>
+          Connect Affiliate
+        </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ mr: 1 }}>
+          <Box sx={{ mr: 2 }}>
             <KOLNotification />
           </Box>
-          <Box sx={{ mr: 1 }}>
-            <Navigation title=" For Project" newPage url="/projects" />
+          <Box sx={{ mr: 2, backgroundColor: "background.paper", borderRadius: 5 }}>
+            <Navigation title=" For Project" newPage url="/projects/affiliate" />
           </Box>
           {/* <KOLProfile /> */}
           <AffiliateProfile />

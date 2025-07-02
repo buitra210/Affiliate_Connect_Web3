@@ -8,7 +8,7 @@ import {
 } from "@centic-scoring/utils/storage/authStorage";
 import { Box, Button, Dialog, DialogContent, Divider, Typography } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useAccount } from "wagmi";
+// wagmi removed
 import BootstrapDialogTitle from "../primitives/Dialog";
 import { StateStatus } from "../component";
 import { loginPortfolio } from "@centic-scoring/api/services";
@@ -26,7 +26,8 @@ type Props = {
   open: boolean;
 };
 export default function SignatureRequire({ handleClose, handleOpen, open }: Props) {
-  const { address, connector } = useAccount();
+  const address = null; // Mock value since wagmi is removed
+  const connector = null; // Mock value since wagmi is removed
   const dispatch = useAppDispatch();
   const [status, setStatus] = useState<StateStatus>("IDLE");
   const connectorConfig = useMemo(() => {

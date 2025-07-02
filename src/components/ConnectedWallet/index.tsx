@@ -2,7 +2,7 @@ import { CopyIcon, WalletIcon } from "@centic-scoring/icons";
 import { formatAddress } from "@centic-scoring/utils/string/stringUtils";
 import { Box, Button, IconButton, Paper, Popover, Typography } from "@mui/material";
 import { MouseEvent, useCallback, useState } from "react";
-import { useAccount, useDisconnect } from "wagmi";
+// wagmi removed
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { toast } from "react-toastify";
@@ -17,7 +17,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import useDialogState from "@centic-scoring/hooks/common/useDialogState";
 
 export default function ConnectedWallet() {
-  const { address } = useAccount();
+  const address = null; // Mock value since wagmi is removed
   const [openUserProfile, setOpenUserProfile] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const {
@@ -88,8 +88,8 @@ export default function ConnectedWallet() {
 }
 
 const Content = ({ onLoginClick }: { onLoginClick: () => void }) => {
-  const { address, connector } = useAccount();
-  const { disconnect } = useDisconnect();
+  const address = null; // Mock value since wagmi is removed
+  const disconnect = () => {}; // Mock function since wagmi is removed
   const checkVerifiedWallet = useCallback(() => {
     try {
       const portfolioJwt = getAPIJwtWithKey("portfolio", String(address));
@@ -108,7 +108,7 @@ const Content = ({ onLoginClick }: { onLoginClick: () => void }) => {
     disconnect();
     deleteAPIJwt(`portfolio`);
     removeAPPStorage("skipWalletVerification");
-    localStorage.removeItem(`wagmi.${connector?.id}.shimDisconnect`);
+    // wagmi localStorage cleanup removed
   };
   return (
     <Paper sx={{ p: 3 }}>

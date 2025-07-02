@@ -1,8 +1,6 @@
-import { LogoIcon, LogoIconMobile } from "../../../icons";
-import { Box, IconButton, Theme, useMediaQuery, Drawer } from "@mui/material";
+import { Box, IconButton, Theme, useMediaQuery, Drawer, Typography } from "@mui/material";
 import { MenuIcon } from "@centic-scoring/icons";
 import { useState } from "react";
-import Link from "next/link";
 import AuthComponent from "@centic-scoring/components/Dialogs/AuthComponent";
 import MobileSidebar from "../MobileSidebar";
 import useForProjectSidebar from "@centic-scoring/layouts/hooks/useForProjectLayout";
@@ -40,29 +38,9 @@ export default function DesktopHeader() {
           alignItems: "center",
         }}
       >
-        {!isIpad && (
-          <Link href="/">
-            <LogoIcon
-              sx={{
-                width: "111px",
-                height: "40px",
-                mx: 2,
-              }}
-            />
-          </Link>
-        )}
-        {isIpad && (
-          <>
-            <Link href="/projects">
-              <LogoIconMobile
-                sx={{
-                  fontSize: "2rem",
-                  mx: 2,
-                }}
-              />
-            </Link>
-          </>
-        )}
+        <Typography variant="h4" color="background.paper" sx={{ ml: 2 }}>
+          Connect Affiliate
+        </Typography>
         <Box sx={{ pr: { xs: 2, md: 3 }, display: "flex", alignItems: "center" }}>
           <Box sx={{ mr: 2 }}>
             <ProjectNotification />

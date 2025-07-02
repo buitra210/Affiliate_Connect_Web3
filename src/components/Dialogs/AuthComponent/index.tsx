@@ -74,7 +74,7 @@ const AuthComponent = () => {
           <LoadingButton
             sx={{ ml: 2 }}
             loading={status === "PROCESSING"}
-            variant="outlined"
+            variant="contained"
             onClick={handleOpenProfile}
           >
             {`Welcome, ${userName}`}

@@ -873,3 +873,265 @@ export async function connectKOLs(kol: TKOLInfo, message: string) {
     }),
   });
 }
+export type RTActiveWalletRequest = {
+  contractAddress: string | "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
+  projectId: string;
+  campaignStartDate: string;
+  campaignEndDate: string;
+  preCampaignDays: number;
+  maxPages: number | 10;
+};
+
+export type RTActiveWalletResponse = {
+  success: boolean;
+  data: {
+    campaignInfo: {
+      contractAddress: string;
+      projectId: string;
+      preCampaignPeriod: {
+        start: string;
+        end: string;
+        days: number;
+      };
+      campaignPeriod: {
+        start: string;
+        end: string;
+        days: number;
+      };
+    };
+    report: {
+      campaign: {
+        token: {
+          name: string;
+          symbol: string;
+          contractAddress: string;
+        };
+        period: {
+          preCampaign: {
+            from: string;
+            to: string;
+          };
+          duringCampaign: {
+            from: string;
+            to: string;
+          };
+        };
+      };
+      summary: {
+        name: string;
+        preCampaign: number;
+        duringCampaign: number;
+        changePercent: number;
+        description: string;
+      };
+      dailyData: {
+        date: string;
+        count: number;
+      }[];
+      dataCollection: {
+        maxPages: number;
+        transactionsAnalyzed: {
+          preCampaign: number;
+          duringCampaign: number;
+          total: number;
+        };
+      };
+    };
+  };
+};
+
+export async function fetchActiveWallet(data: RTActiveWalletRequest) {
+  return await AFFILIATE_API.post<RTActiveWalletResponse>(`/api/etherscan/active_wallets`, {
+    body: JSON.stringify(data),
+  });
+}
+
+export type RTNewHoldersRequest = {
+  contractAddress: string;
+  projectId: string;
+  campaignStartDate: string;
+  campaignEndDate: string;
+  preCampaignDays: number;
+  maxPages: number;
+};
+
+export type RTNewHoldersResponse = {
+  success: boolean;
+  data: {
+    campaignInfo: {
+      contractAddress: string;
+      projectId: string;
+      preCampaignPeriod: {
+        start: string;
+        end: string;
+        days: number;
+      };
+      campaignPeriod: {
+        start: string;
+        end: string;
+        days: number;
+      };
+    };
+    report: {
+      campaign: {
+        token: {
+          name: string;
+          symbol: string;
+          contractAddress: string;
+        };
+        period: {
+          preCampaign: {
+            from: string;
+            to: string;
+          };
+          duringCampaign: {
+            from: string;
+            to: string;
+          };
+        };
+      };
+      summary: {
+        name: string;
+        preCampaign: number;
+        duringCampaign: number;
+        changePercent: number;
+        description: string;
+      };
+      dailyData: {
+        date: string;
+        count: number;
+      }[];
+      dataCollection: {
+        maxPages: number;
+        transactionsAnalyzed: {
+          preCampaign: number;
+          duringCampaign: number;
+          total: number;
+        };
+      };
+    };
+  };
+};
+
+export async function fetchNewHolders(data: RTNewHoldersRequest) {
+  return await AFFILIATE_API.post<RTNewHoldersResponse>(`/api/etherscan/new_token_holders`, {
+    body: JSON.stringify(data),
+  });
+}
+
+export type RTVolumeRequest = {
+  contractAddress: string;
+  projectId: string;
+  campaignStartDate: string;
+  campaignEndDate: string;
+  preCampaignDays: number;
+  maxPages: number;
+};
+
+export type RTVolumeResponse = {
+  success: boolean;
+  data: {
+    campaignInfo: {
+      contractAddress: string;
+      projectId: string;
+      preCampaignPeriod: {
+        start: string;
+        end: string;
+        days: number;
+      };
+      campaignPeriod: {
+        start: string;
+        end: string;
+        days: number;
+      };
+    };
+    report: {
+      campaign: {
+        token: {
+          name: string;
+          symbol: string;
+          contractAddress: string;
+        };
+        period: {
+          preCampaign: {
+            from: string;
+            to: string;
+          };
+          duringCampaign: {
+            from: string;
+            to: string;
+          };
+        };
+      };
+      summary: {
+        name: string;
+        preCampaign: number;
+        duringCampaign: number;
+        changePercent: number;
+        description: string;
+      };
+      dailyData: {
+        date: string;
+        count: number;
+      }[];
+      dataCollection: {
+        maxPages: number;
+        transactionsAnalyzed: {
+          preCampaign: number;
+          duringCampaign: number;
+          total: number;
+        };
+      };
+    };
+  };
+};
+
+export async function fetchVolume(data: RTVolumeRequest) {
+  return await AFFILIATE_API.post<RTVolumeResponse>(`/api/etherscan/volume_transactions`, {
+    body: JSON.stringify(data),
+  });
+}
+
+export type RTAffiliateAnalytics = {
+  success: boolean;
+  data: {
+    projectId: string;
+    barChart: {
+      title: string;
+      data: {
+        totalClicks: number;
+        redirectUrl: string;
+      }[];
+    };
+    donutChart: {
+      title: string;
+      redirectUrls: string[];
+    };
+  };
+};
+
+export type RTAffiliateAnalyticsDonut = {
+  success: boolean;
+  data: {
+    projectId: string;
+    redirectUrl: string;
+    totalClicks: number;
+    data: {
+      label: string;
+      affiliateId: string;
+      offerId: string;
+      clicks: number;
+    }[];
+  };
+};
+
+export async function fetchAffiliateAnalytics(projectId: string) {
+  return await AFFILIATE_API.get<RTAffiliateAnalytics>(`/${projectId}/affiliate-analytics`);
+}
+
+export async function fetchAffiliateAnalyticsDonut(projectId: string, redirectUrl: string) {
+  const encodedUrl = encodeURIComponent(redirectUrl);
+  return await AFFILIATE_API.get<RTAffiliateAnalyticsDonut>(
+    `/${projectId}/affiliate-analytics/donut/${encodedUrl}`
+  );
+}
